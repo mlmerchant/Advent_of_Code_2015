@@ -5,8 +5,6 @@ with open("challenge.txt") as file:
         presents.append(line.strip().split("x"))
         line = file.readline()
 
-# presents = [["2", "3", "4"]]  # Should equal 58
-
 total = 0
 
 for present in presents:
