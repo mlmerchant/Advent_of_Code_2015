@@ -1004,13 +1004,21 @@ fbpyzxdfmkrtfaeg
 yzsmlbnftftgwadz
 EOF
 
+#Test Data
+#cat << EOF > challenge.txt
+#xaabaae
+#abcdegh
+#EOF
+
 nice=0
 
 
 # It contains a pair of any two letters that appears at least twice in the string without overlapping, like xyxy (xy) or aabcdefgaa (aa),
 # but not like aaa (aa, but it overlaps).
+# This function is coded incorrectly.  It tests for any two pairs together.  Todo: Fix the logic.
 function Condition1() {
    local string=$1
+   echo "String is called $string within condition 2."
    local priorVar=0
    local var
    pairs=0
@@ -1030,12 +1038,25 @@ function Condition1() {
            priorVar=$var  # preparing to test against next var, when not scoring a pair
        fi
    done <<< $string
-
+   return 1  # Never found the nice condition.
 }
 
 # It contains at least one letter which repeats with exactly one letter between them, like xyx, abcdefeghi (efe), or even aaa.
 function Condition2() {
-   return 0
+   local string=$1
+   local prior=0
+   local prior2=0
+   local var
+   while read -n 1 var; do
+       if [[ $prior2 == $var ]]; then
+           echo ":$prior2: and :$var: matches"
+           return 0
+       else
+           prior2=$prior # preparing to test against next var
+           prior=$var  #  ''   
+       fi
+   done <<< $string
+   return 1  # Never found the nice condition.
 }
 
  
@@ -1046,5 +1067,5 @@ while read -r string; do
 done < challenge.txt
 
 
-# The answer is ??
+# The answer is not 93 or 40
 echo $nice
