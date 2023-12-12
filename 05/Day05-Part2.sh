@@ -1010,7 +1010,27 @@ nice=0
 # It contains a pair of any two letters that appears at least twice in the string without overlapping, like xyxy (xy) or aabcdefgaa (aa),
 # but not like aaa (aa, but it overlaps).
 function Condition1() {
-    return 0
+   local string=$1
+   local priorVar=0
+   local var
+   pairs=0
+   while read -n 1 var; do
+       if [[ $var == "" ]]; then
+           return 1
+       else
+           if [[ $var == $priorVar ]]; then
+                (( pairs++ ))
+                if [[ $pairs -eq 2 ]]; then
+                    return 0  # nice condition met
+                else
+                    priorVar=0
+                    continue  # when a pair is made, the prior must be reset
+                fi
+           fi
+           priorVar=$var  # preparing to test against next var, when not scoring a pair
+       fi
+   done <<< $string
+
 }
 
 # It contains at least one letter which repeats with exactly one letter between them, like xyx, abcdefeghi (efe), or even aaa.
