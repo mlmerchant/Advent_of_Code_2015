@@ -1015,7 +1015,6 @@ nice=0
 
 # It contains a pair of any two letters that appears at least twice in the string without overlapping, like xyxy (xy) or aabcdefgaa (aa),
 # but not like aaa (aa, but it overlaps).
-# This function is coded incorrectly.  It tests for any two pairs together.  Todo: Fix the logic.
 function Condition1() {
    local string=$1
    local length=${#string}
