@@ -1018,26 +1018,14 @@ nice=0
 # This function is coded incorrectly.  It tests for any two pairs together.  Todo: Fix the logic.
 function Condition1() {
    local string=$1
-   echo "String is called $string within condition 2."
-   local priorVar=0
-   local var
-   pairs=0
-   while read -n 1 var; do
-       if [[ $var == "" ]]; then
-           return 1
-       else
-           if [[ $var == $priorVar ]]; then
-                (( pairs++ ))
-                if [[ $pairs -eq 2 ]]; then
-                    return 0  # nice condition met
-                else
-                    priorVar=0
-                    continue  # when a pair is made, the prior must be reset
-                fi
-           fi
-           priorVar=$var  # preparing to test against next var, when not scoring a pair
-       fi
-   done <<< $string
+   local length=${#string}
+   local i
+   local dots=""
+   for ((i=0; i < $length; i++)); do
+       find=${string:0:$((i + 2))}
+       (echo $string | sed "s/^\($dots\).\{2\}/\188/" | grep $find > /dev/null) && return 0
+       dots="$dots."
+   done
    return 1  # Never found the nice condition.
 }
 
@@ -1049,7 +1037,6 @@ function Condition2() {
    local var
    while read -n 1 var; do
        if [[ $prior2 == $var ]]; then
-           echo ":$prior2: and :$var: matches"
            return 0
        else
            prior2=$prior # preparing to test against next var
@@ -1059,7 +1046,7 @@ function Condition2() {
    return 1  # Never found the nice condition.
 }
 
- 
+
 while read -r string; do
   Condition1 $string || continue
   Condition2 $string || continue
@@ -1067,5 +1054,5 @@ while read -r string; do
 done < challenge.txt
 
 
-# The answer is not 93 or 40
+# The answer is not 93 or 40.  412 is too high.
 echo $nice
