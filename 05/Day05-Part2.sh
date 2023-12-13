@@ -1021,13 +1021,14 @@ function Condition1() {
    local length=${#string}
    local i
    local dots=""
-   for ((i=0; i < $length; i++)); do
-       find=${string:0:$((i + 2))}
+   for ((i=0; i < $length - 1; i++)); do
+       find=${string:$i:2}
        (echo $string | sed "s/^\($dots\).\{2\}/\188/" | grep $find > /dev/null) && return 0
        dots="$dots."
    done
    return 1  # Never found the nice condition.
 }
+
 
 # It contains at least one letter which repeats with exactly one letter between them, like xyx, abcdefeghi (efe), or even aaa.
 function Condition2() {
@@ -1054,5 +1055,5 @@ while read -r string; do
 done < challenge.txt
 
 
-# The answer is not 93 or 40.  412 is too high.
+# The answer is 55.
 echo $nice
