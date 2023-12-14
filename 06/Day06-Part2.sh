@@ -363,8 +363,8 @@ while read -r line; do
                
                fi
            else
-               value=${grid["$x#$y"]]}
-               grid["$x#$y"]=$((value + 1))
+               value=${grid["$x#$y"]}
+               grid["$x#$y"]=$((value + 2))
            fi
        done
    done
@@ -379,5 +379,5 @@ for ((x=0 ; x < 1000; x++)); do
     done
 done
 
-# 186000 is too low.
+# 14110788 is the correct answer.
 echo $lights
