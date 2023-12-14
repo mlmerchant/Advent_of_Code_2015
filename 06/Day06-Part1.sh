@@ -342,11 +342,11 @@ while read -r line; do
     fi
     
     ### Set the lights.
-   for ((x=$startx; x <= stopx; x++)); do
-       for ((y=$starty; y <= stopy; y++)); do
+    for ((x=$startx; x <= $stopx; x++)); do
+       for ((y=$starty; y <= $stopy; y++)); do
            if [[ $state == "On" ]]; then
                grid["$x#$y"]=1
-           elif [[ $state == "On" ]]; then
+           elif [[ $state == "Off" ]]; then
                grid["$x#$y"]=0
            else
                value=${grid["$x#$y"]}
@@ -362,12 +362,13 @@ done < instructions.txt
 lights=0
 for ((x=0 ; x < 1000; x++)); do
     for ((y=0; y < 1000; y++)); do
-        if [[ ${grid["$x#$y"]} -eq 0 ]]; then
+        if [[ ${grid["$x#$y"]} -eq 1 ]]; then
             ((lights++))
         fi
     done
 done
 
+# 484273 and 515727 is not correct.
 echo $lights
 
 
