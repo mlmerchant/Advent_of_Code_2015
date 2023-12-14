@@ -316,45 +316,51 @@ done
 
 
 while read -r line; do
-    if (echo $line | grep "turn on" > /dev/null); then
+    if (echo "$line" | grep "turn on" > /dev/null); then
         state="On"
-        pair1=$(echo $line | cut -d ' ' -f 3)
-        pair2=$(echo $line | cut -d ' ' -f 5)
-        startx=$(echo $pair1 | cut -d ',' -f 1)
-        starty=$(echo $pair1 | cut -d ',' -f 2)
-        stopx=$(echo $pair2 | cut -d ',' -f 1)
-        stopy=$(echo $pair2 | cut -d ',' -f 2)
-    elif (echo $line | grep "turn off" > /dev/null); then
+        pair1=$(echo "$line" | cut -d ' ' -f 3)
+        pair2=$(echo "$line" | cut -d ' ' -f 5)
+        startx=$(echo "$pair1" | cut -d ',' -f 1)
+        starty=$(echo "$pair1" | cut -d ',' -f 2)
+        stopx=$(echo "$pair2" | cut -d ',' -f 1)
+        stopy=$(echo "$pair2" | cut -d ',' -f 2)
+    elif (echo "$line" | grep "turn off" > /dev/null); then
         state="Off"
-        pair1=$(echo $line | cut -d ' ' -f 3)
-        pair2=$(echo $line | cut -d ' ' -f 5)
-        startx=$(echo $pair1 | cut -d ',' -f 1)
-        starty=$(echo $pair1 | cut -d ',' -f 2)
-        stopx=$(echo $pair2 | cut -d ',' -f 1)
-        stopy=$(echo $pair2 | cut -d ',' -f 2)
+        pair1=$(echo "$line" | cut -d ' ' -f 3)
+        pair2=$(echo "$line" | cut -d ' ' -f 5)
+        startx=$(echo "$pair1" | cut -d ',' -f 1)
+        starty=$(echo "$pair1" | cut -d ',' -f 2)
+        stopx=$(echo "$pair2" | cut -d ',' -f 1)
+        stopy=$(echo "$pair2" | cut -d ',' -f 2)
     else
         state="Toggle"
-        pair1=$(echo $line | cut -d ' ' -f 2)
-        pair2=$(echo $line | cut -d ' ' -f 4)
-        startx=$(echo $pair1 | cut -d ',' -f 1)
-        starty=$(echo $pair1 | cut -d ',' -f 2)
-        stopx=$(echo $pair2 | cut -d ',' -f 1)
-        stopy=$(echo $pair2 | cut -d ',' -f 2)
+        pair1=$(echo "$line" | cut -d ' ' -f 2)
+        pair2=$(echo "$line" | cut -d ' ' -f 4)
+        startx=$(echo "$pair1" | cut -d ',' -f 1)
+        starty=$(echo "$pair1" | cut -d ',' -f 2)
+        stopx=$(echo "$pair2" | cut -d ',' -f 1)
+        stopy=$(echo "$pair2" | cut -d ',' -f 2)
     fi
     
     ### Set the lights.
-    for ((x=$startx; x <= $stopx; x++)); do
-       for ((y=$starty; y <= $stopy; y++)); do
+    for ((x=startx; x <= stopx; x++)); do
+       for ((y=starty; y <= stopy; y++)); do
            if [[ $state == "On" ]]; then
-               value=${grid["$x#$y"]]}
+               value=${grid["$x#$y"]}
                grid["$x#$y"]=$((value + 1))
+               
            elif [[ $state == "Off" ]]; then
-               value=${grid["$x#$y"]]}
+               value=${grid["$x#$y"]}
                value=$((value - 1))
+               
                if [[ $value -le 0 ]]; then
+                   
                    grid["$x#$y"]=0
+               
                else
+                   
                    grid["$x#$y"]=$value
+               
                fi
            else
                value=${grid["$x#$y"]]}
@@ -368,13 +374,10 @@ done < instructions.txt
 lights=0
 for ((x=0 ; x < 1000; x++)); do
     for ((y=0; y < 1000; y++)); do
-        value=${grid["$x#$y"]]}
-            lights=$((lights + value))
-        fi
+        value=${grid["$x#$y"]}
+        lights=$((lights + value))
     done
 done
 
-# the correct answer is ???
+# 186000 is too low.
 echo $lights
-
-
