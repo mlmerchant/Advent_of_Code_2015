@@ -306,10 +306,17 @@ EOF
 # Our 1000 x 1000 grid of lights.
 declare -A grid
 
+# turn all the lights off
+for ((x=0 ; x < 1000; x++)); do
+    for ((y=0; y < 1000; y++)); do
+        grid["$x#$y"]=0
+    done
+done
+
 
 while read -r line; do
     if (echo $line | grep "turn on" > /dev/null); then
-        echo Turn it on!
+        state="On"
         pair1=$(echo $line | cut -d ' ' -f 3)
         pair2=$(echo $line | cut -d ' ' -f 5)
         startx=$(echo $pair1 | cut -d ',' -f 1)
@@ -317,7 +324,7 @@ while read -r line; do
         stopx=$(echo $pair2 | cut -d ',' -f 1)
         stopy=$(echo $pair2 | cut -d ',' -f 2)
     elif (echo $line | grep "turn off" > /dev/null); then
-        echo Turn it off!
+        state="Off"
         pair1=$(echo $line | cut -d ' ' -f 3)
         pair2=$(echo $line | cut -d ' ' -f 5)
         startx=$(echo $pair1 | cut -d ',' -f 1)
@@ -325,7 +332,7 @@ while read -r line; do
         stopx=$(echo $pair2 | cut -d ',' -f 1)
         stopy=$(echo $pair2 | cut -d ',' -f 2)
     else
-        echo Toggle it!
+        state="Toggle"
         pair1=$(echo $line | cut -d ' ' -f 2)
         pair2=$(echo $line | cut -d ' ' -f 4)
         startx=$(echo $pair1 | cut -d ',' -f 1)
@@ -334,13 +341,33 @@ while read -r line; do
         stopy=$(echo $pair2 | cut -d ',' -f 2)
     fi
     
-    ### Todo, set the lights.
-    #for ((x=$startx; x <= 
-    
-    
+    ### Set the lights.
+   for ((x=$startx; x <= stopx; x++)); do
+       for ((y=$starty; y <= stopy; y++)); do
+           if [[ $state == "On" ]]; then
+               grid["$x#$y"]=1
+           elif [[ $state == "On" ]]; then
+               grid["$x#$y"]=0
+           else
+               value=${grid["$x#$y"]}
+               value=$((value + 1))
+               value=$((value % 2))
+               grid["$x#$y"]=$value
+           fi
+       done
+   done
 done < instructions.txt
 
-    ### Todo, count the lights.
+# Count the lights
+lights=0
+for ((x=0 ; x < 1000; x++)); do
+    for ((y=0; y < 1000; y++)); do
+        if [[ ${grid["$x#$y"]} -eq 0 ]]; then
+            ((lights++))
+        fi
+    done
+done
 
+echo $lights
 
 
