@@ -368,7 +368,7 @@ for ((x=0 ; x < 1000; x++)); do
     done
 done
 
-# 484273 and 515727 is not correct.
+# the correct answer is 377891.
 echo $lights
 
 
