@@ -29,3 +29,18 @@ function NotGate()
     done <<< "$binary"
     echo $return
 }
+
+function Bin2Dec() {
+    local dec=$1
+    local num
+    local i=${#dec}
+    local currentPower=1  #  1, 2, 4, 8, 16 etc
+    local currentNumber
+    local result=0
+    for ((i-- ; i > -1; i--)); do  #  Starting at far right, value of 1
+        currentNumber=${dec:$i:1}
+        result=$(( (currentPower * currentNumber) + result ))
+        currentPower=$(( currentPower * 2 ))    
+    done
+    echo $result
+}
