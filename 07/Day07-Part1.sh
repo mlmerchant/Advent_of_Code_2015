@@ -1,4 +1,21 @@
 #!/bin/bash
+# https://adventofcode.com/2015/day/7
+
+function RShiftGate() {
+    local dec=$1
+    local length=${#dec}
+    local result="0"
+    local i
+    for ((i=0 ; i < length - 1; i++)); do
+        result=${result}${dec:$i:1} 
+    done   
+    echo $result
+}
+
+function LShiftGate() {
+    echo "Todo"
+    exit 1
+}
 
 function Int2Bin() {
     local num=$1
@@ -46,7 +63,7 @@ function Bin2Dec() {
     echo $result
 }
 
-function And() {
+function AndGate() {
     local dec1=$1
     local dec2=$2
     local length=${#dec1}
@@ -62,7 +79,7 @@ function And() {
     echo $result
 }
 
-function Or() {
+function OrGate() {
     local dec1=$1
     local dec2=$2
     local length=${#dec1}
