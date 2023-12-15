@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dec_to_bin() {
+function Int2Bin() {
     local num=$1
     local bin=""
 
@@ -10,4 +10,22 @@ dec_to_bin() {
     done
 
     printf "%016d\n" $bin # Pad with zeros to make it 16 bits
+}
+
+function NotGate()
+{
+    binary=$1
+
+    return=""
+    while read -n 1 var; do
+        if [[ $var -eq 0 ]]; then
+            return=${return}1
+        elif [[ $var -eq 1 ]]; then
+            return=${return}0
+        else
+            echo "Bad Input!"
+            exit 11
+        fi 
+    done <<< "$binary"
+    echo $return
 }
