@@ -1,6 +1,30 @@
 #!/bin/bash
 # https://adventofcode.com/2015/day/7
 
+INPUT_FILE="test.txt"
+
+cat << EOF > test.txt
+123 -> x
+456 -> y
+x AND y -> d
+x OR y -> e
+x LSHIFT 2 -> f
+y RSHIFT 2 -> g
+NOT x -> h
+NOT y -> i
+EOF
+
+# After it is run, these are the signals on the wires:
+# d: 72
+# e: 507
+# f: 492
+# g: 114
+# h: 65412
+# i: 65079
+# x: 123
+# y: 456
+
+
 function RShiftGate() {
     local dec=$1
     local length=${#dec}
@@ -100,3 +124,46 @@ function OrGate() {
     done   
     echo $result
 }
+
+
+
+# Store of solved values
+declare -A lookup
+
+
+while true; do
+    while read -r var; do
+        
+        #  x AND y -> d
+        if (echo $var | grep "AN" > /dev/null); then        
+            echo AND
+
+
+        #  x OR y -> e
+        elif (echo $var | grep "OR" > /dev/null); then
+            echo OR
+
+
+        #  x LSHIFT 2 -> f
+        elif (echo $var | grep "LS" > /dev/null); then
+            echo LSHIFT
+        
+
+        #  y RSHIFT 2 -> g
+        elif (echo $var | grep "RS" > /dev/null); then
+            echo RSHIFT     
+       
+
+        #  NOT x -> h
+        elif (echo $var | grep "NO" > /dev/null); then
+            echo NOT           
+
+ 
+        #  No Gate
+        else
+            echo No Gate
+        fi
+
+    done < $INPUT_FILE
+    break
+done
