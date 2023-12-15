@@ -12,11 +12,11 @@ function Int2Bin() {
     printf "%016d\n" $bin # Pad with zeros to make it 16 bits
 }
 
-function NotGate()
-{
-    binary=$1
-
-    return=""
+function NotGate() {
+    local binary=$1
+    local return=""
+    local var
+    
     while read -n 1 var; do
         if [[ $var -eq 0 ]]; then
             return=${return}1
@@ -37,6 +37,7 @@ function Bin2Dec() {
     local currentPower=1  #  1, 2, 4, 8, 16 etc
     local currentNumber
     local result=0
+    
     for ((i-- ; i > -1; i--)); do  #  Starting at far right, value of 1
         currentNumber=${dec:$i:1}
         result=$(( (currentPower * currentNumber) + result ))
