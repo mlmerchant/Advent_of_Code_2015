@@ -13,8 +13,14 @@ function RShiftGate() {
 }
 
 function LShiftGate() {
-    echo "Todo"
-    exit 1
+    local dec=$1
+    local length=${#dec}
+    local result=""
+    local i
+    for ((i=1 ; i < length; i++)); do
+        result=${result}${dec:$i:1} 
+    done   
+    echo "${result}0"
 }
 
 function Int2Bin() {
