@@ -45,3 +45,19 @@ function Bin2Dec() {
     done
     echo $result
 }
+
+function And() {
+    local dec1=$1
+    local dec2=$2
+    local length=${#dec1}
+    local result=""
+    local i
+    for ((i=0 ; i < length; i++)); do
+        if [[ ${dec1:$i:1} -eq 1 ]] &&  [[ ${dec1:$i:1} -eq 1 ]]; then
+            result=${result}1
+        else
+            result=${result}0
+        fi 
+    done   
+    echo $result
+}
