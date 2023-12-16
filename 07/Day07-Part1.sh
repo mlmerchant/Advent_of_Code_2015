@@ -26,24 +26,32 @@ EOF
 
 
 function RShiftGate() {
-    local dec=$1
+    local dec=$2
+    local times=$1
     local length=${#dec}
     local result="0"
     local i
-    for ((i=0 ; i < length - 1; i++)); do
-        result=${result}${dec:$i:1} 
+    local x
+    for ((x=0; x < times; x++)); do
+        for ((i=0 ; i < length - 1; i++)); do
+            result=${result}${dec:$i:1} 
+        done
     done   
     echo $result
 }
 
 function LShiftGate() {
-    local dec=$1
+    local dec=$2
+    local times=$1
     local length=${#dec}
     local result=""
     local i
-    for ((i=1 ; i < length; i++)); do
-        result=${result}${dec:$i:1} 
-    done   
+    local x
+    for ((x=0; x < times; x++)); do
+        for ((i=1 ; i < length; i++)); do
+            result=${result}${dec:$i:1} 
+        done   
+    done
     echo "${result}0"
 }
 
@@ -140,7 +148,7 @@ while true; do
             first=$(echo $var | cut -d ' ' -f 1)
             second=$(echo $var | cut -d ' ' -f 3)
             store=$(echo  $var | cut -d ' ' -f 5)
-            if [[ -n ${lookup[$store ]} ]]; then
+            if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
             
@@ -151,31 +159,44 @@ while true; do
             first=$(echo $var | cut -d ' ' -f 1)
             second=$(echo $var | cut -d ' ' -f 3)
             store=$(echo  $var | cut -d ' ' -f 5)
-            if [[ -n ${lookup[$store ]} ]]; then
+            if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
+  
 
-        # ----Todo----
-        #  x LSHIFT 2 -> f
+        # ----Completed----
         elif (echo $var | grep "LS" > /dev/null); then
             echo LSHIFT
             first=$(echo $var | cut -d ' ' -f 1)
             second=$(echo $var | cut -d ' ' -f 3)
             store=$(echo  $var | cut -d ' ' -f 5)
-            if [[ -n ${lookup[$store ]} ]]; then
+            if [[ -n ${lookup[$store]} ]]; then
                 continue
+            fi
+            # Check if value is a number
+            if (echo $first | grep -E '[0-9]+' > /dev/null); then
+                lookup[$store]=$( LShiftGate $second $(Dec2Bin $first))
+            # maybe value is in lookup?
+            elif [[ -n ${lookup[$first]} ]]; then
+                lookup[$store]=$(LShiftGate $second ${lookup[$value]})
             fi
         
         
-        # ----Todo----
-        #  y RSHIFT 2 -> g
+        # ----Completed----
         elif (echo $var | grep "RS" > /dev/null); then
             echo RSHIFT     
             first=$(echo $var | cut -d ' ' -f 1)
             second=$(echo $var | cut -d ' ' -f 3)
             store=$(echo  $var | cut -d ' ' -f 5)
-            if [[ -n ${lookup[$store ]} ]]; then
+            if [[ -n ${lookup[$store]} ]]; then
                 continue
+            fi
+            # Check if value is a number
+            if (echo $first | grep -E '[0-9]+' > /dev/null); then
+                lookup[$store]=$( RShiftGate $second $(Dec2Bin $first))
+            # maybe value is in lookup?
+            elif [[ -n ${lookup[$first]} ]]; then
+                lookup[$store]=$(RShiftGate $second ${lookup[$value]})
             fi
             
         
@@ -184,7 +205,7 @@ while true; do
             echo NOT           
             value=$(echo $var | cut -d ' ' -f 2)
             store=$(echo  $var | cut -d ' ' -f 4)
-            if [[ -n ${lookup[$store ]} ]]; then
+            if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
             
@@ -192,8 +213,8 @@ while true; do
             if (echo $value | grep -E '[0-9]+' > /dev/null); then
                 lookup[$store]=$(NotGate $(Dec2Bin $value))
             # maybe value is in lookup?
-            elif [[ -n ${lookup[$store]} ]]; then
-                lookup[$store]=$(NotGate lookup[$value])
+            elif [[ -n ${lookup[$value]} ]]; then
+                lookup[$store]=$(NotGate ${lookup[$value]})
             fi
             
         else
@@ -209,8 +230,8 @@ while true; do
             if (echo $value | grep -E '[0-9]+' > /dev/null); then
                 lookup[$store]=$(Dec2Bin $value)
             # maybe value is in lookup?
-            elif [[ -n ${lookup[$store]} ]]; then
-                lookup[$store]=lookup[$value]
+            elif [[ -n ${lookup[$value]} ]]; then
+                lookup[$store]=${lookup[$value]}
             fi
         fi
     done < $INPUT_FILE
