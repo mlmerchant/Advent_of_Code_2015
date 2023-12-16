@@ -512,7 +512,7 @@ while true; do
                 num1="${lookup[$first]}"
             fi
             # Try to find the numbers
-            if (echo "$first" | grep -E '[0-9]+' > /dev/null); then
+            if (echo "$second" | grep -E '[0-9]+' > /dev/null); then
                 num2=$(Dec2Bin "$second")
             elif [[ -n ${lookup[$second]} ]]; then
                 num2="${lookup[$second]}"
@@ -542,7 +542,7 @@ while true; do
                 num1="${lookup[$first]}"
             fi
             # Try to find the numbers
-            if (echo "$first" | grep -E '[0-9]+' > /dev/null); then
+            if (echo "$second" | grep -E '[0-9]+' > /dev/null); then
                 num2=$(Dec2Bin "$second")
             elif [[ -n ${lookup[$second]} ]]; then
                 num2="${lookup[$second]}"
