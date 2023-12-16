@@ -133,13 +133,16 @@ declare -A lookup
 
 while true; do
     while read -r var; do
-        
+       
         #  x AND y -> d
         if (echo $var | grep "AN" > /dev/null); then        
             echo AND
             first=$(echo $var | cut -d ' ' -f 1)
             second=$(echo $var | cut -d ' ' -f 3)
             store=$(echo  $var | cut -d ' ' -f 5)
+            if [[ -n ${lookup[$store ]} ]]; then
+                continue
+            fi
             
 
         #  x OR y -> e
@@ -148,6 +151,9 @@ while true; do
             first=$(echo $var | cut -d ' ' -f 1)
             second=$(echo $var | cut -d ' ' -f 3)
             store=$(echo  $var | cut -d ' ' -f 5)
+            if [[ -n ${lookup[$store ]} ]]; then
+                continue
+            fi
 
 
         #  x LSHIFT 2 -> f
@@ -156,6 +162,9 @@ while true; do
             first=$(echo $var | cut -d ' ' -f 1)
             second=$(echo $var | cut -d ' ' -f 3)
             store=$(echo  $var | cut -d ' ' -f 5)
+            if [[ -n ${lookup[$store ]} ]]; then
+                continue
+            fi
         
         
 
@@ -165,18 +174,30 @@ while true; do
             first=$(echo $var | cut -d ' ' -f 1)
             second=$(echo $var | cut -d ' ' -f 3)
             store=$(echo  $var | cut -d ' ' -f 5)
+            if [[ -n ${lookup[$store ]} ]]; then
+                continue
+            fi
+            
 
         #  NOT x -> h
         elif (echo $var | grep "NO" > /dev/null); then
             echo NOT           
             value=$(echo $var | cut -d ' ' -f 2)
             store=$(echo  $var | cut -d ' ' -f 4)
+            if [[ -n ${lookup[$store ]} ]]; then
+                continue
+            fi
+            
  
         #  456 -> y
         else
             echo No Gate
             value=$(echo $var | cut -d ' ' -f 1)
             store=$(echo  $var | cut -d ' ' -f 3)
+            if [[ -n ${lookup[$store ]} ]]; then
+                continue
+            fi
+            
             
         fi
 
