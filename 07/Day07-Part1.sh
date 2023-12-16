@@ -141,7 +141,7 @@ declare -A lookup
 
 while true; do
     while read -r var; do
-        # ----Todo----
+        # ----Completed----
         #  x AND y -> d
         if (echo $var | grep "AN" > /dev/null); then        
             echo AND
@@ -151,8 +151,28 @@ while true; do
             if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
+
+            num1=""
+            num2=""
+            # Try to find the numbers
+            if (echo $first | grep -E '[0-9]+' > /dev/null); then
+                num1=$(Dec2Bin $first))
+            elif [[ -n ${lookup[$first]} ]]; then
+                num1="${lookup[$first]}"
+            fi
+            # Try to find the numbers
+            if (echo $first | grep -E '[0-9]+' > /dev/null); then
+                num2=$(Dec2Bin $second))
+            elif [[ -n ${lookup[$second]} ]]; then
+                num2="${lookup[$second]}"
+            fi
+
+            #if we have both numbers, we can proceed
+            if [[ -n $num1 ]] && [[ -n $num2 ]]; then
+                lookup[$store]=$(AndGate $num1 $num2)
+            fi
             
-        # ----Todo----
+        # ----Completed----
         #  x OR y -> e
         elif (echo $var | grep "OR" > /dev/null); then
             echo OR
@@ -161,6 +181,26 @@ while true; do
             store=$(echo  $var | cut -d ' ' -f 5)
             if [[ -n ${lookup[$store]} ]]; then
                 continue
+            fi
+            
+            num1=""
+            num2=""
+            # Try to find the numbers
+            if (echo $first | grep -E '[0-9]+' > /dev/null); then
+                num1=$(Dec2Bin $first))
+            elif [[ -n ${lookup[$first]} ]]; then
+                num1="${lookup[$first]}"
+            fi
+            # Try to find the numbers
+            if (echo $first | grep -E '[0-9]+' > /dev/null); then
+                num2=$(Dec2Bin $second))
+            elif [[ -n ${lookup[$second]} ]]; then
+                num2="${lookup[$second]}"
+            fi
+
+            #if we have both numbers, we can proceed
+            if [[ -n $num1 ]] && [[ -n $num2 ]]; then
+                lookup[$store]=$(OrGate $num1 $num2)
             fi
   
 
