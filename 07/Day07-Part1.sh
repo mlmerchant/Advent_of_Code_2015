@@ -71,21 +71,28 @@ function Dec2Bin() {
 
 function NotGate() {
     local binary=$1
-    local return=""
+    local result=""
     local var
-    
-    while read -n 1 var; do
-        if [[ $var -eq 0 ]]; then
-            return=${return}1
-        elif [[ $var -eq 1 ]]; then
-            return=${return}0
+
+    # Ensure binary string is 16 bits
+    binary=$(printf "%016s" "$binary" | sed 's/ /0/g')
+
+    for (( i=0; i<${#binary}; i++ )); do
+        var=${binary:$i:1}
+        if [[ $var == "0" ]]; then
+            result="${result}1"
+        elif [[ $var == "1" ]]; then
+            result="${result}0"
         else
+            # This should not happen if the input is properly formatted
             echo "Bad Input!"
             exit 11
-        fi 
-    done <<< "$binary"
-    echo $return
+        fi
+    done
+
+    echo $result
 }
+
 
 function Bin2Dec() {
     local dec=$1
