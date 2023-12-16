@@ -1,6 +1,8 @@
 #!/bin/bash
 # https://adventofcode.com/2015/day/7
 
+set -x
+
 INPUT_FILE="test.txt"
 
 cat << EOF > test.txt
@@ -37,7 +39,7 @@ function RShiftGate() {
             result=${result}${dec:$i:1} 
         done
     done   
-    echo $result
+    echo "$result"
 }
 
 function LShiftGate() {
@@ -59,7 +61,7 @@ function Dec2Bin() {
     local num=$1
     local bin=""
 
-    while [ $num -gt 0 ]; do
+    while [ "$num" -gt 0 ]; do
         bin=$(( $num % 2 ))$bin # Get the remainder and prepend to the binary string
         num=$(( $num / 2 ))
     done
@@ -143,11 +145,10 @@ while true; do
     while read -r var; do
         # ----Completed----
         #  x AND y -> d
-        if (echo $var | grep "AN" > /dev/null); then        
-            echo AND
-            first=$(echo $var | cut -d ' ' -f 1)
-            second=$(echo $var | cut -d ' ' -f 3)
-            store=$(echo  $var | cut -d ' ' -f 5)
+        if (echo "$var" | grep "AN" > /dev/null); then        
+            first=$(echo "$var" | cut -d ' ' -f 1)
+            second=$(echo "$var" | cut -d ' ' -f 3)
+            store=$(echo  "$var" | cut -d ' ' -f 5)
             if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
@@ -155,30 +156,29 @@ while true; do
             num1=""
             num2=""
             # Try to find the numbers
-            if (echo $first | grep -E '[0-9]+' > /dev/null); then
-                num1=$(Dec2Bin $first))
+            if (echo "$first" | grep -E '[0-9]+' > /dev/null); then
+                num1=$(Dec2Bin "$first")
             elif [[ -n ${lookup[$first]} ]]; then
                 num1="${lookup[$first]}"
             fi
             # Try to find the numbers
-            if (echo $first | grep -E '[0-9]+' > /dev/null); then
-                num2=$(Dec2Bin $second))
+            if (echo "$first" | grep -E '[0-9]+' > /dev/null); then
+                num2=$(Dec2Bin "$second")
             elif [[ -n ${lookup[$second]} ]]; then
                 num2="${lookup[$second]}"
             fi
 
             #if we have both numbers, we can proceed
             if [[ -n $num1 ]] && [[ -n $num2 ]]; then
-                lookup[$store]=$(AndGate $num1 $num2)
+                lookup[$store]=$(AndGate "$num1" "$num2")
             fi
             
         # ----Completed----
         #  x OR y -> e
-        elif (echo $var | grep "OR" > /dev/null); then
-            echo OR
-            first=$(echo $var | cut -d ' ' -f 1)
-            second=$(echo $var | cut -d ' ' -f 3)
-            store=$(echo  $var | cut -d ' ' -f 5)
+        elif (echo "$var" | grep "OR" > /dev/null); then
+            first=$(echo "$var" | cut -d ' ' -f 1)
+            second=$(echo "$var" | cut -d ' ' -f 3)
+            store=$(echo  "$var" | cut -d ' ' -f 5)
             if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
@@ -186,94 +186,94 @@ while true; do
             num1=""
             num2=""
             # Try to find the numbers
-            if (echo $first | grep -E '[0-9]+' > /dev/null); then
-                num1=$(Dec2Bin $first))
+            if (echo "$first" | grep -E '[0-9]+' > /dev/null); then
+                num1=$(Dec2Bin "$first")
             elif [[ -n ${lookup[$first]} ]]; then
                 num1="${lookup[$first]}"
             fi
             # Try to find the numbers
-            if (echo $first | grep -E '[0-9]+' > /dev/null); then
-                num2=$(Dec2Bin $second))
+            if (echo "$first" | grep -E '[0-9]+' > /dev/null); then
+                num2=$(Dec2Bin "$second")
             elif [[ -n ${lookup[$second]} ]]; then
                 num2="${lookup[$second]}"
             fi
 
             #if we have both numbers, we can proceed
             if [[ -n $num1 ]] && [[ -n $num2 ]]; then
-                lookup[$store]=$(OrGate $num1 $num2)
+                lookup[$store]=$(OrGate "$num1" "$num2")
             fi
   
 
         # ----Completed----
-        elif (echo $var | grep "LS" > /dev/null); then
-            echo LSHIFT
-            first=$(echo $var | cut -d ' ' -f 1)
-            second=$(echo $var | cut -d ' ' -f 3)
-            store=$(echo  $var | cut -d ' ' -f 5)
+        elif (echo "$var" | grep "LS" > /dev/null); then
+            first=$(echo "$var" | cut -d ' ' -f 1)
+            second=$(echo "$var" | cut -d ' ' -f 3)
+            store=$(echo  "$var" | cut -d ' ' -f 5)
             if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
             # Check if value is a number
-            if (echo $first | grep -E '[0-9]+' > /dev/null); then
-                lookup[$store]=$( LShiftGate $second $(Dec2Bin $first))
+            if (echo "$first" | grep -E '[0-9]+' > /dev/null); then
+                lookup[$store]=$( LShiftGate "$second" $(Dec2Bin "$first"))
             # maybe value is in lookup?
             elif [[ -n ${lookup[$first]} ]]; then
-                lookup[$store]=$(LShiftGate $second ${lookup[$value]})
+                lookup[$store]=$(LShiftGate "$second" "${lookup[$value]}")
             fi
         
         
         # ----Completed----
-        elif (echo $var | grep "RS" > /dev/null); then
-            echo RSHIFT     
-            first=$(echo $var | cut -d ' ' -f 1)
-            second=$(echo $var | cut -d ' ' -f 3)
-            store=$(echo  $var | cut -d ' ' -f 5)
+        elif (echo "$var" | grep "RS" > /dev/null); then
+            first=$(echo "$var" | cut -d ' ' -f 1)
+            second=$(echo "$var" | cut -d ' ' -f 3)
+            store=$(echo  "$var" | cut -d ' ' -f 5)
             if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
             # Check if value is a number
-            if (echo $first | grep -E '[0-9]+' > /dev/null); then
-                lookup[$store]=$( RShiftGate $second $(Dec2Bin $first))
+            if (echo "$first" | grep -E '[0-9]+' > /dev/null); then
+                lookup[$store]=$( RShiftGate "$second" $(Dec2Bin "$first"))
             # maybe value is in lookup?
             elif [[ -n ${lookup[$first]} ]]; then
-                lookup[$store]=$(RShiftGate $second ${lookup[$value]})
+                lookup[$store]=$(RShiftGate "$second" "${lookup[$value]}")
             fi
             
         
-        elif (echo $var | grep "NO" > /dev/null); then
+        elif (echo "$var" | grep "NO" > /dev/null); then
             # ----Completed----
-            echo NOT           
-            value=$(echo $var | cut -d ' ' -f 2)
-            store=$(echo  $var | cut -d ' ' -f 4)
+            value=$(echo "$var" | cut -d ' ' -f 2)
+            store=$(echo  "$var" | cut -d ' ' -f 4)
             if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
             
             # Check if value is a number
-            if (echo $value | grep -E '[0-9]+' > /dev/null); then
-                lookup[$store]=$(NotGate $(Dec2Bin $value))
+            if (echo "$value" | grep -E '[0-9]+' > /dev/null); then
+                lookup[$store]=$(NotGate $(Dec2Bin "$value"))
             # maybe value is in lookup?
             elif [[ -n ${lookup[$value]} ]]; then
-                lookup[$store]=$(NotGate ${lookup[$value]})
+                lookup[$store]=$(NotGate "${lookup[$value]}")
             fi
             
         else
             # ----Completed----
-            echo No Gate
-            value=$(echo $var | cut -d ' ' -f 1)
-            store=$(echo  $var | cut -d ' ' -f 3)
+            value=$(echo "$var" | cut -d ' ' -f 1)
+            store=$(echo  "$var" | cut -d ' ' -f 3)
             if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
 
             # Check if value is a number
-            if (echo $value | grep -E '[0-9]+' > /dev/null); then
-                lookup[$store]=$(Dec2Bin $value)
+            if (echo "$value" | grep -E '[0-9]+' > /dev/null); then
+                lookup[$store]=$(Dec2Bin "$value")
             # maybe value is in lookup?
             elif [[ -n ${lookup[$value]} ]]; then
                 lookup[$store]=${lookup[$value]}
             fi
         fi
     done < $INPUT_FILE
-    break  ### later remove the break and replace with checking for the winning condition.
+    if [[ -n ${lookup["i"]} ]]; then
+        echo "i should be 65079"
+        Bin2Dec "${lookup["i"]}"
+        break 
+    fi
 done
