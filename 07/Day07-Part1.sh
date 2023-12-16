@@ -137,31 +137,47 @@ while true; do
         #  x AND y -> d
         if (echo $var | grep "AN" > /dev/null); then        
             echo AND
-
+            first=$(echo $var | cut -d ' ' -f 1)
+            second=$(echo $var | cut -d ' ' -f 3)
+            store=$(echo  $var | cut -d ' ' -f 5)
+            
 
         #  x OR y -> e
         elif (echo $var | grep "OR" > /dev/null); then
             echo OR
+            first=$(echo $var | cut -d ' ' -f 1)
+            second=$(echo $var | cut -d ' ' -f 3)
+            store=$(echo  $var | cut -d ' ' -f 5)
 
 
         #  x LSHIFT 2 -> f
         elif (echo $var | grep "LS" > /dev/null); then
             echo LSHIFT
+            first=$(echo $var | cut -d ' ' -f 1)
+            second=$(echo $var | cut -d ' ' -f 3)
+            store=$(echo  $var | cut -d ' ' -f 5)
+        
         
 
         #  y RSHIFT 2 -> g
         elif (echo $var | grep "RS" > /dev/null); then
             echo RSHIFT     
-       
+            first=$(echo $var | cut -d ' ' -f 1)
+            second=$(echo $var | cut -d ' ' -f 3)
+            store=$(echo  $var | cut -d ' ' -f 5)
 
         #  NOT x -> h
         elif (echo $var | grep "NO" > /dev/null); then
             echo NOT           
-
+            value=$(echo $var | cut -d ' ' -f 2)
+            store=$(echo  $var | cut -d ' ' -f 4)
  
-        #  No Gate
+        #  456 -> y
         else
             echo No Gate
+            value=$(echo $var | cut -d ' ' -f 1)
+            store=$(echo  $var | cut -d ' ' -f 3)
+            
         fi
 
     done < $INPUT_FILE
