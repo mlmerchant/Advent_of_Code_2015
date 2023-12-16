@@ -178,15 +178,22 @@ while true; do
                 continue
             fi
             
-
-        # ----Todo----
-        #  NOT x -> h
+        
         elif (echo $var | grep "NO" > /dev/null); then
+            # ----Completed----
             echo NOT           
             value=$(echo $var | cut -d ' ' -f 2)
             store=$(echo  $var | cut -d ' ' -f 4)
             if [[ -n ${lookup[$store ]} ]]; then
                 continue
+            fi
+            
+            # Check if value is a number
+            if (echo $value | grep -E '[0-9]+' > /dev/null); then
+                lookup[$store]=$(NotGate $(Dec2Bin $value))
+            # maybe value is in lookup?
+            elif [[ -n ${lookup[$store]} ]]; then
+                lookup[$store]=$(NotGate lookup[$value])
             fi
             
         else
