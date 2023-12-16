@@ -47,7 +47,7 @@ function LShiftGate() {
     echo "${result}0"
 }
 
-function Int2Bin() {
+function Dec2Bin() {
     local num=$1
     local bin=""
 
@@ -133,7 +133,7 @@ declare -A lookup
 
 while true; do
     while read -r var; do
-       
+        # ----Todo----
         #  x AND y -> d
         if (echo $var | grep "AN" > /dev/null); then        
             echo AND
@@ -144,7 +144,7 @@ while true; do
                 continue
             fi
             
-
+        # ----Todo----
         #  x OR y -> e
         elif (echo $var | grep "OR" > /dev/null); then
             echo OR
@@ -155,7 +155,7 @@ while true; do
                 continue
             fi
 
-
+        # ----Todo----
         #  x LSHIFT 2 -> f
         elif (echo $var | grep "LS" > /dev/null); then
             echo LSHIFT
@@ -167,7 +167,7 @@ while true; do
             fi
         
         
-
+        # ----Todo----
         #  y RSHIFT 2 -> g
         elif (echo $var | grep "RS" > /dev/null); then
             echo RSHIFT     
@@ -179,6 +179,7 @@ while true; do
             fi
             
 
+        # ----Todo----
         #  NOT x -> h
         elif (echo $var | grep "NO" > /dev/null); then
             echo NOT           
@@ -188,19 +189,23 @@ while true; do
                 continue
             fi
             
- 
-        #  456 -> y
         else
+            # ----Completed----
             echo No Gate
             value=$(echo $var | cut -d ' ' -f 1)
             store=$(echo  $var | cut -d ' ' -f 3)
-            if [[ -n ${lookup[$store ]} ]]; then
+            if [[ -n ${lookup[$store]} ]]; then
                 continue
             fi
-            
-            
-        fi
 
+            # Check if value is a number
+            if (echo $value | grep -E '[0-9]+' > /dev/null); then
+                lookup[$store]=$(Dec2Bin $value)
+            # maybe value is in lookup?
+            elif [[ -n ${lookup[$store]} ]]; then
+                lookup[$store]=lookup[$value]
+            fi
+        fi
     done < $INPUT_FILE
-    break
+    break  ### later remove the break and replace with checking for the winning condition.
 done
