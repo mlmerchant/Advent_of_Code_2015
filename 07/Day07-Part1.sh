@@ -377,7 +377,7 @@ function RShiftGate() {
     
     local result=""
     for ((x=0; x < times; x++)); do
-        result=${append}0    
+        result=${result}0    
     done
 
     local i
