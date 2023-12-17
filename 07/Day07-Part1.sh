@@ -365,7 +365,6 @@ hf AND hl -> hn
 NOT h -> i
 NOT hn -> ho
 he RSHIFT 5 -> hh
-
 EOF
 
 
