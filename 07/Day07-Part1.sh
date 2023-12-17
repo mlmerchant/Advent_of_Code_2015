@@ -478,7 +478,7 @@ function AndGate() {
     local result=""
     local i
     for ((i=0 ; i < length; i++)); do
-        if [[ ${dec1:$i:1} -eq 1 ]] &&  [[ ${dec1:$i:1} -eq 1 ]]; then
+        if [[ ${dec1:$i:1} -eq 1 ]] &&  [[ ${dec2:$i:1} -eq 1 ]]; then
             result=${result}1
         else
             result=${result}0
