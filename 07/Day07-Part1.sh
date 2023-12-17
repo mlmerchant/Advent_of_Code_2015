@@ -633,7 +633,7 @@ while true; do
             fi
         fi
     done < $INPUT_FILE
-    if [[ -n ${lookup["i"]} ]]; then
+    if [[ -n ${lookup["a"]} ]]; then
         # echo "i should be 65079"
         Bin2Dec "${lookup["a"]}"
         break 
