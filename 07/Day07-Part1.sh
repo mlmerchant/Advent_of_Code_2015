@@ -390,14 +390,21 @@ function LShiftGate() {
     local length=${#dec}
     local result=""
     local i
+    
+    for ((i=times ; i < length; i++)); do
+        result=${result}${dec:$i:1} 
+    done   
+
+
     local x
+    local append=""
     for ((x=0; x < times; x++)); do
-        for ((i=1 ; i < length; i++)); do
-            result=${result}${dec:$i:1} 
-        done   
+        append=${append}0    
     done
-    echo "${result}0"
+  
+    echo "${result}${append}"
 }
+
 
 function Dec2Bin() {
     local num=$1
