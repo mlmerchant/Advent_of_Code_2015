@@ -597,7 +597,7 @@ while true; do
                 ((i--))
             # maybe value is in lookup?
             elif [[ -n ${lookup[$first]} ]]; then
-                lookup[$store]=$(LShiftGate "$second" "${lookup[$value]}")
+                lookup[$store]=$(LShiftGate "$second" "${lookup[$first]}")
                 Array=( "${Array[@]:0:i}" "${Array[@]:i+1}" )
                 ((i--))
             fi
@@ -618,7 +618,7 @@ while true; do
                 ((i--))
             # maybe value is in lookup?
             elif [[ -n ${lookup[$first]} ]]; then
-                lookup[$store]=$(RShiftGate "$second" "${lookup[$value]}")
+                lookup[$store]=$(RShiftGate "$second" "${lookup[$first]}")
                 Array=( "${Array[@]:0:i}" "${Array[@]:i+1}" )
                 ((i--))
             fi
