@@ -679,4 +679,4 @@ done
 # echo "x: 123 $(Bin2Dec ${lookup["x"]})"
 # echo "y: 456 $(Bin2Dec ${lookup["y"]})"
 
-echo "a: ??? $(Bin2Dec ${lookup["a"]})"
+echo "a: 16076 $(Bin2Dec ${lookup["a"]})"
