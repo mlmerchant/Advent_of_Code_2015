@@ -373,16 +373,20 @@ function RShiftGate() {
     local dec=$2
     local times=$1
     local length=${#dec}
-    local result="0"
-    local i
-    local x
+    
+    local result=""
     for ((x=0; x < times; x++)); do
-        for ((i=0 ; i < length - 1; i++)); do
+        results=${append}0    
+    done
+
+    local i
+    for ((i=0 ; i < length - times; i++)); do
             result=${result}${dec:$i:1} 
-        done
-    done   
+    done
+
     echo "$result"
 }
+
 
 function LShiftGate() {
     local dec=$2
@@ -417,6 +421,7 @@ function Dec2Bin() {
 
     printf "%016d\n" $bin # Pad with zeros to make it 16 bits
 }
+
 
 function NotGate() {
     local binary=$1
@@ -459,6 +464,7 @@ function Bin2Dec() {
     echo $result
 }
 
+
 function AndGate() {
     local dec1=$1
     local dec2=$2
@@ -475,6 +481,7 @@ function AndGate() {
     echo $result
 }
 
+
 function OrGate() {
     local dec1=$1
     local dec2=$2
@@ -490,7 +497,6 @@ function OrGate() {
     done   
     echo $result
 }
-
 
 
 # Store of solved values
