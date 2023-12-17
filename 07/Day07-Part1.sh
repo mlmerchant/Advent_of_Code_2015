@@ -1,7 +1,7 @@
 #!/bin/bash
 # https://adventofcode.com/2015/day/7
 
-INPUT_FILE="test.txt"
+INPUT_FILE="challenge.txt"
 
 cat << EOF > test.txt
 123 -> x
@@ -670,11 +670,13 @@ while true; do
     fi
 done
 
-echo "d: 72 $(Bin2Dec ${lookup["d"]})"
-echo "e: 507 $(Bin2Dec ${lookup["e"]})"
-echo "f: 492 $(Bin2Dec ${lookup["f"]})"
-echo "g: 114 $(Bin2Dec ${lookup["g"]})"
-echo "h: 65412 $(Bin2Dec ${lookup["h"]})"
-echo "i: 65079 $(Bin2Dec ${lookup["i"]})"
-echo "x: 123 $(Bin2Dec ${lookup["x"]})"
-echo "y: 456 $(Bin2Dec ${lookup["y"]})"
+# echo "d: 72 $(Bin2Dec ${lookup["d"]})"
+# echo "e: 507 $(Bin2Dec ${lookup["e"]})"
+# echo "f: 492 $(Bin2Dec ${lookup["f"]})"
+# echo "g: 114 $(Bin2Dec ${lookup["g"]})"
+# echo "h: 65412 $(Bin2Dec ${lookup["h"]})"
+# echo "i: 65079 $(Bin2Dec ${lookup["i"]})"
+# echo "x: 123 $(Bin2Dec ${lookup["x"]})"
+# echo "y: 456 $(Bin2Dec ${lookup["y"]})"
+
+echo "a: ??? $(Bin2Dec ${lookup["a"]})"
