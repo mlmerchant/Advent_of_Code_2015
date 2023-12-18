@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import itertools
+
 challenge = """Faerun to Tristram = 65
 Faerun to Tambi = 129
 Faerun to Norrath = 144
@@ -40,17 +42,15 @@ for line in challenge:
 cities = cities.keys()
 
 # Create iter for the permutations
-import itertools
 perms = itertools.permutations(cities)
 
 # Create lookup table for the distances.
 distance = {}
 for line in challenge:
 	line = line. split(" ")
-	# store using sorted tuple
 	distance[tuple(sorted([line[0], line[2]]))] = line[4]
 
-shortest = 1000000000000 # first
+shortest = 1000000000000  # first
 
 for option in perms:
 	this_trips_distance = 0
@@ -58,12 +58,11 @@ for option in perms:
 		if i == 0:
 			continue
 		else:
-			prior = option[i -1]
+			prior = option[i - 1]
 			current = option[i]
-		this_trips_distance += int(distance[tuple(sorted([prior, current]))])
+			this_trips_distance += int(distance[tuple(sorted([prior, current]))])
 	if this_trips_distance < shortest:
 		shortest = this_trips_distance
-	
+
+# The correct answer is 117.
 print(shortest)
-	
- 
