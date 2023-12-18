@@ -50,7 +50,20 @@ for line in challenge:
 	# store using sorted tuple
 	distance[tuple(sorted([line[0], line[2]]))] = line[4]
 
-shortest = 0 # first
+shortest = 1000000000000 # first
 
-print(distance)
+for option in perms:
+	this_trips_distance = 0
+	for i in range(len(option)):
+		if i == 0:
+			continue
+		else:
+			prior = int,(option[i -1])
+			current = int(option[i ])
+		this_trips_distance += distance[tuple(sorted([prior, current]))]
+	if this_trips_distance < shortest:
+		shortest = this_trips_distance
+	
+print(shortest)
+	
  
