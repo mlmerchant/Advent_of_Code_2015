@@ -58,9 +58,9 @@ for option in perms:
 		if i == 0:
 			continue
 		else:
-			prior = int,(option[i -1])
-			current = int(option[i ])
-		this_trips_distance += distance[tuple(sorted([prior, current]))]
+			prior = option[i -1]
+			current = option[i]
+		this_trips_distance += int(distance[tuple(sorted([prior, current]))])
 	if this_trips_distance < shortest:
 		shortest = this_trips_distance
 	
