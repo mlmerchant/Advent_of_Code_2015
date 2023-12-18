@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 challenge = """Faerun to Tristram = 65
 Faerun to Tambi = 129
