@@ -76,4 +76,6 @@ while true; do
 
 done
 
+# The answer is hxbxxyzz
+
 echo $challenge
