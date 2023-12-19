@@ -5,7 +5,7 @@ cat << EOF > challenge.txt
 EOF
 
 # Remove objects with red attribute:
-challenge=$( cat challenge.txt | jq 'walk(if type == "object" then with_entries(select(.value != "foobar")) else . end)')
+challenge=$( cat challenge.txt | jq 'walk(if type == "object" then with_entries(select(.value != "red")) else . end)')
 #challenge=$( cat challenge.txt | jq 'def walk(f): . as $in | if type == "object" then reduce keys[] as $key ( {}; . + { ($key): ($in[$key] | walk(f)) } | select(.[$key] != "red")) elif type == "array" then map( walk(f) ) else . end; walk(.)')
 
 
