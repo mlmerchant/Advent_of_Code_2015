@@ -64,3 +64,16 @@ function Condition3() {
     done
     return 1 # failed to find a match
 }
+
+
+challenge="hxbxwxba"
+
+
+while true; do
+
+    challenge=$(IncrementString $challenge)
+    (Condition1 $challenge) && (Condition2 $challenge) && (Condition3 $challenge) && break
+
+done
+
+echo $challenge
