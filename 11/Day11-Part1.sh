@@ -25,6 +25,16 @@ IncrementString() {
 }
 
 
+function Condition2() {
+    local string=$1
+    local alphabet=( 'o' 'i' 'l' )
+        for pattern in "${alphabet[@]}"; do
+            (echo $string | grep "$pattern" > /dev/null) && return 1
+        done 
+    return 0 # failed to find a match, which is good
+}
+
+
 function Condition3() {
     local marker=1
     local string=$1
