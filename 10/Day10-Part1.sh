@@ -1,9 +1,9 @@
 #!/bin/bash
 
 initialNumber=3113322113 # challenge
-passes=50
+passes=40
 # initialNumber=1
-# passes=15
+# passes=5
 
 string="$initialNumber"
 # echo "Starting: $string"
