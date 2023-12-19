@@ -18,5 +18,5 @@ for x in ${array[@]}; do
     sum=$(( sum + x ))
 done 
 
-# The answer is not 126754
+# The answer is not 126754 or 191164
 echo $sum
