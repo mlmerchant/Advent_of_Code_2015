@@ -25,7 +25,7 @@ IncrementString() {
 }
 
 
-function Condition1() {
+function Condition3() {
     local marker=1
     local string=$1
     local alphabet=( 'aa' 'bb' 'cc' 'dd' 'ee' 'ff' 'gg' 'hh' 'ii' 'jj' 'kk' 'll' 'mm' 'nn' 'oo' 'pp' 'qq' 'rr' 'ss' 'tt' 'uu' 'vv' 'ww' 'xx' 'yy' 'zz' )
