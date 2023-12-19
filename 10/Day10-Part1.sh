@@ -35,5 +35,5 @@ for ((x=1; x <= passes; x++)); do
 done
 
 # test input result is 312211 with a length of 6.
-# challenge input answer has length of ???
+# challenge input answer has length of 329356
 echo ${#string}
