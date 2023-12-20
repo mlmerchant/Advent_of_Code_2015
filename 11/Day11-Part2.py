@@ -16,3 +16,9 @@ def IncrementString(x):
         returnString=f"{char}{returnString}"
     return returnString    
 
+def Condition1(x):
+    alphabet = ['abc', 'bcd', 'cde', 'def', 'efg', 'fgh', 'ghi', 'hij', 'ijk', 'jkl', 'klm', 'lmn', 'mno', 'nop', 'opq', 'pqr', 'qrs', 'rst', 'stu', 'tuv', 'uvw', 'vwx', 'wxy', 'xyz']
+    for pattern in alphabet:
+        if x.find(pattern) != -1:
+            return True
+    return False
