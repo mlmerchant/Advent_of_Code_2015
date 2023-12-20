@@ -5,23 +5,36 @@ cat << EOF > challenge.txt
 EOF
 
 
-# Define the jq script
-jqScript=$(cat <<'EOF'
-def removeRedObjects:
-  if type == "object" then
-    with_entries(select(.value != "red") | .value |= removeRedObjects)
-  elif type == "array" then
-    map(removeRedObjects)
-  else
-    .
-  end;
+function locateXobjects() {
+    local loc=0   #last open curely without finding 'X'
+    local fx=0    #found the x, so working out the end of the object
+    local index=0 #index of characters
+    local inc=0   #represents nested '}'
 
-removeRedObjects
-EOF
-)
+    while read -n 1 -r char; do
+        if [[ $fx -eq 0 ]] && [[ $char == '{' ]]; then
+            loc=$index
+        elif [[ $fx -eq 0 ]] && [[ $char == 'X' ]]; then
+            fx=1
+        elif [[ $fx -eq 1 ]] && [[ $char == '{' ]]; then
+            ((inc++))
+        elif [[ $fx -eq 1 ]] && [[ $inc -gt 0 ]] && [[ $char == '}' ]]; then
+             ((inc--))
+        elif [[ $fx -eq 1 ]] && [[ $inc -eq 0 ]] && [[ $char == '}' ]]; then
+            echo $loc:$index
+            exit 0 # so we can loop on this function until find them all
+        fi
+        ((index++))
+    done <<< $json
+    exit 1 # none were found
+}
 
-# Call the jq script
-challenge=$(cat challenge.txt | jq "$jqScript")
+# Replace red attribute with X to make finding it easier. 
+challenge=$( cat challenge.txt | sed 's/\:\"red/\:\"X/g')
+
+
+## TODO create a loop where you use locateXobjects to remove bad objects using substrings + sed
+
 
 challenge=$( echo $challeng | sed 's/[,:]/ /g')
 array=( $(echo $challenge | tr -cd "1234567\-890\ ") )
