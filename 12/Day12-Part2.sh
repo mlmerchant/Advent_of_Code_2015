@@ -5,13 +5,22 @@ cat << EOF > challenge.txt
 EOF
 
 
+#cat << EOF > challenge.txt
+#[[[{{color:"X"{100}}{1}{}{}{}{2}{}{{}{}color:"X"{100}{}}}]]]
+#EOF
+
+
+function debug(){
+    if [[ ${debug} == "true"  ]]; then echo "DEBUG: ${1}" ; fi
+}
+
 function locateXobjects() {
-    local fx=0      #found the x, so working out the end of the object
-    local index=0   #index of characters
-    local preinc=-1 #tracks current level of nesting, for finding the earlier matching '{'
-    local inc=0     #represents nested '}'
-    local -a array  #Array to keep locations of previous '{' at proper level of nesting
-    local loc       #The open curl index that cooresponds to the current level where the x was found
+    local fx=0
+    local index=0
+    local preinc=-1
+    local inc=0
+    local -a array
+    local loc
 
     while read -n 1 -r char; do
         if [[ $fx -eq 0 ]] && [[ $char == '{' ]]; then
@@ -28,21 +37,31 @@ function locateXobjects() {
              ((inc--))
         elif [[ $fx -eq 1 ]] && [[ $inc -eq 0 ]] && [[ $char == '}' ]]; then
             echo $loc:$index
-            exit 0 # so we can loop on this function until find them all
+            return 0
         fi
         ((index++))
     done <<< $1
-    exit 1 # none were found
+    return 1
 }
+
+debug="false"
 
 # Replace red attribute with X to make finding it easier. 
 challenge=$( cat challenge.txt | sed 's/\:\"red/\:\"X/g')
 
 
-## TODO create a loop where you use locateXobjects to remove bad objects using substrings + sed
+## Use locateXobjects to remove bad objects using substrings
+while true; do
+    debug "substring loop started!"
+    capture=$(locateXobjects "$challenge") || break
+    first=$(echo $capture | cut -d ':' -f 1)
+    last=$(echo $capture | cut -d ':' -f 2)
+    challenge="${challenge:0:$first}${challenge:$(($last + 1))}"
+    debug "Removed bad object from index $first to $last"
+done
 
 
-challenge=$( echo $challeng | sed 's/[,:]/ /g')
+challenge=$( echo $challenge | sed 's/[,:]/ /g')
 array=( $(echo $challenge | tr -cd "1234567\-890\ ") )
 
 sum=0
@@ -51,5 +70,5 @@ for x in ${array[@]}; do
     sum=$(( sum + x ))
 done 
 
-# The answer is not 126754 or 191164
+# The answer is 87842
 echo $sum
