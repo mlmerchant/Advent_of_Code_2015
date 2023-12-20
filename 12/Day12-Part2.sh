@@ -6,16 +6,22 @@ EOF
 
 
 function locateXobjects() {
-    local loc=0   #last open curely without finding 'X'
-    local fx=0    #found the x, so working out the end of the object
-    local index=0 #index of characters
-    local inc=0   #represents nested '}'
+    local fx=0      #found the x, so working out the end of the object
+    local index=0   #index of characters
+    local preinc=-1 #tracks current level of nesting, for finding the earlier matching '{'
+    local inc=0     #represents nested '}'
+    local -a array  #Array to keep locations of previous '{' at proper level of nesting
+    local loc       #The open curl index that cooresponds to the current level where the x was found
 
     while read -n 1 -r char; do
         if [[ $fx -eq 0 ]] && [[ $char == '{' ]]; then
-            loc=$index
+            ((preinc++))
+            array[$preinc]=$index
+        elif [[ $fx -eq 0 ]] && [[ $char == '}' ]]; then
+            ((preinc--))
         elif [[ $fx -eq 0 ]] && [[ $char == 'X' ]]; then
             fx=1
+            loc=${array[$preinc]}
         elif [[ $fx -eq 1 ]] && [[ $char == '{' ]]; then
             ((inc++))
         elif [[ $fx -eq 1 ]] && [[ $inc -gt 0 ]] && [[ $char == '}' ]]; then
@@ -25,7 +31,7 @@ function locateXobjects() {
             exit 0 # so we can loop on this function until find them all
         fi
         ((index++))
-    done <<< $json
+    done <<< $1
     exit 1 # none were found
 }
 
