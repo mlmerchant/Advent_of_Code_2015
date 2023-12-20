@@ -22,3 +22,11 @@ def Condition1(x):
         if x.find(pattern) != -1:
             return True
     return False
+
+def Condition2(x):
+    alphabet = ['o', 'i', 'l']
+    for pattern in alphabet:
+        if x.find(pattern) != -1:
+            return False
+    return True
+
