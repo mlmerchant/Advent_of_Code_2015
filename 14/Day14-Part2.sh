@@ -20,8 +20,7 @@ TIMER=2503 # seconds
 
 # build tables for tracking who is farthest each second
 declare -A names
-declare -A ScoreTable
-declare -A finalDistance 
+declare -A finalScore 
 for ((x=0; x < TIMER; x++)); do
     declare -A "LookUp$x"
 done 
@@ -49,21 +48,30 @@ while read -r name speed stamina rest; do
         ((temp_stamina--))
         eval "LookUp$x[$name]=$distance"
     done 
-    finalDistance[$name]=$distance
 done < challenge.txt
 
 
 for ((x=0; x < TIMER; x++)); do
-    furthest_distance=0
-    further_name=0
+    unset ScoreTable
+    declare -A ScoreTable
     for name in "${!names[@]}"; do
-        a='${LookUp'
-        eval "temp=$a$x[$name]}"
-        echo $temp
+        eval "ScoreTable[$name]=\${LookUp$x[$name]}"
+    done
+    # calculate the highest distance,
+    max=0
+    for name in "${!names[@]}"; do
+         if [[ "${ScoreTable[$name]}" -gt $max ]]; then
+             max="${ScoreTable[$name]}"
+         fi
+    done
+    # then give each deer with that distance a point.
+    for name in "${!names[@]}"; do
+        if [[ "${ScoreTable[$name]}" -eq $max ]]; then
+             finalScore[$name]=$((finalScore[$name] + 1))
+        fi
     done
 done
 
 
-
-# ???? is the correct answer 
-echo $winning_time
+# 1059 is the correct answer
+echo "${finalScore[*]}" | sed 's/ /\n/g' | sort -n |tail -n 1
