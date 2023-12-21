@@ -37,7 +37,7 @@ def Condition3(x):
         for pattern in alphabet:
                     location = x.find(pattern)
                     if location != -1:
-                        x = f"{x[0:location]}{x[location + 2:]}"
+                        x = f"{x[0:location]}${x[location + 2:]}"
                         count += 1
     if count >= 2:
         return True
@@ -45,4 +45,15 @@ def Condition3(x):
         return False
 
 
+challenge="hxbxxyzz"
+
+while True:
+    challenge = IncrementString(challenge)
+    if Condition1(challenge):
+        if Condition2(challenge):
+            if Condition3(challenge):
+                 break
+
+# The answer is hxcaabcc
+print(challenge)
 
