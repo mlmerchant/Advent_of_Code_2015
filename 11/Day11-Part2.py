@@ -30,3 +30,19 @@ def Condition2(x):
             return False
     return True
 
+def Condition3(x):
+    alphabet = ['aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg', 'hh', 'ii', 'jj', 'kk', 'll', 'mm', 'nn', 'oo', 'pp', 'qq', 'rr', 'ss', 'tt', 'uu', 'vv', 'ww', 'xx', 'yy', 'zz']
+    count=0
+    for i in range(2):
+        for pattern in alphabet:
+                    location = x.find(pattern)
+                    if location != -1:
+                        x = f"{x[0:location]}{x[location + 2:]}"
+                        count += 1
+    if count >= 2:
+        return True
+    else:
+        return False
+
+
+
