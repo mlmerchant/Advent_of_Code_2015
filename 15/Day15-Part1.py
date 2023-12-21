@@ -24,20 +24,30 @@ for a in range(1, 98): # Sprinkles
     for b in range(1, 98): # PeanutButter
         for c in range(1, 98): # Frosting
             for d in range(1, 98): # Sugar
+                if (a + b + c + d) != 100:
+                    continue
                 Sprinkles = a
                 PeanutButter = b
                 Frosting = c
                 Sugar = d
                 
-                value1 = ( Sprinkles * (lookup["Sprinkles"]["capacity"]   +     lookup["Sprinkles"]["durability"] +       lookup["Sprinkles"]["flavor"]  + lookup["Sprinkles"]["texture"]   ) )
-                value2 = ( PeanutButter * (lookup["PeanutButter"]["capacity"]   +     lookup["PeanutButter"]["durability"] +       lookup["PeanutButter"]["flavor"]  + lookup["PeanutButter"]["texture"]   ) )
-                value3 = ( Frosting * (lookup["Frosting"]["capacity"]   +     lookup["Frosting"]["durability"] +       lookup["Frosting"]["flavor"]  + lookup["Frosting"]["texture"]   ) )
-                value4 = ( Sugar * (lookup["Sugar"]["capacity"]   +     lookup["Sugar"]["durability"] +       lookup["Sugar"]["flavor"]  + lookup["Sugar"]["texture"]   ) )
+                value1 = ( (Sprinkles * lookup["Sprinkles"]["capacity"]) + (PeanutButter * lookup["PeanutButter"]["capacity"]) + (Frosting * lookup["Frosting"]["capacity"])  + (Sugar * lookup["Sugar"]["capacity"]) )
+                value2 = ( (Sprinkles * lookup["Sprinkles"]["durability"]) + (PeanutButter * lookup["PeanutButter"]["durability"]) + (Frosting * lookup["Frosting"]["durability"]) + (Sugar * lookup["Sugar"]["durability"]) )
+                value3 = ( (Sprinkles * lookup["Sprinkles"]["flavor"]) + (PeanutButter * lookup["PeanutButter"]["flavor"]) + (Frosting * lookup["Frosting"]["flavor"]) + (Sugar * lookup["Sugar"]["flavor"])  )
+                value4 = ( (Sprinkles * lookup["Sprinkles"]["texture"]) + (PeanutButter * lookup["PeanutButter"]["texture"]) + (Frosting * lookup["Frosting"]["texture"]) + (Sugar * lookup["Sugar"]["texture"]) )
+                
+                if value1 <= 0 or value2 <= 0 or value3 <= 0 or value4 <= 0:
+                    pass
                 
                 total = value1 * value2 * value3 * value4
                 
                 if total > max:
                 	max = total
-
-# The answer 2124702744 is too high.  2328 is too low.
-print(total)
+                	
+# 9375000 is too low.  2124702744 is wrong.  40627200 is wrong.
+if max < 9375000:
+    print(f"Answer {max} is too low.")
+else:
+    print(max)
+                
+	
