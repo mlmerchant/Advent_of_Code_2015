@@ -114,7 +114,16 @@ function get_on_neighbors() {
     local SW="$((y + 1))$((x - 1))"
     local SE="$((y + 1))$((x + 1))"
     
-    local total=$("$N$S$E$W$NW$NE$SW$SE" |
+    N="${grid[$N]}"
+    S="${grid[$S]}"
+    E="${grid[$E]}"
+    W="${grid[$W]}"
+    NW="${grid[$NW]}"
+    NE="${grid[$NE]}"
+    SW="${grid[$SW]}"
+    SE="${grid[$SE]}"
+    
+    local total=$( echo "$N$S$E$W$NW$NE$SW$SE" |
         sed 's/\.//g' | wc -c)
         
     ((total--))
@@ -124,13 +133,13 @@ function get_on_neighbors() {
 function process_light() {
     if [[ ${prior_grid["$1"]} == "." ]]; then
         # A light which is off turns on if exactly 3 neighbors are on, and stays off otherwise.
-        local num_of_neighbors = get_on_neighbors "$1"
+        local num_of_neighbors=$(get_on_neighbors "$1")
         if [[ $num_of_neighbors -eq 3 ]]; then
             grid["$1"]="#"
         fi
     else
         # A light which is on stays on when 2 or 3 neighbors are on, and turns off otherwise.
-        local num_of_neighbors = get_on_neighbors "$1"
+        local num_of_neighbors=$(get_on_neighbors "$1")
         if [[ $num_of_neighbors -eq 3 ]] || [[ $num_of_neighbors -eq 3 ]]; then
             grid["$1"]="#"
         else
