@@ -537,6 +537,7 @@ cat 7.txt | grep -v 'trees' >> 8.txt
 cat 8.txt | grep 'perfumes: 1' > final_output.txt
 cat 8.txt | grep -v 'perfumes' >> final_output.txt
 
+# The answer is 40
 cat final_output.txt
 
 
