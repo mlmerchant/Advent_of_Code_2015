@@ -19,11 +19,11 @@ function DoesWin() {
     while true; do
         EnemyHP=$((EnemyHP - PlayerDamage))
         if [[ $EnemyHP -le 0 ]]; then
-            return true
+            return 0
         fi 
         PlayerHP=$((PlayerHP - EnemyDamage))
         if [[ $PlayerHP -le 0 ]]; then
-            return false
+            return 1
         fi 
     done 
 }
@@ -90,7 +90,6 @@ for weapon in "${Weapons[@]}"; do
                 ring1_cost=$(echo $ring1 | cut -d ' ' -f 1)
                 ring2_cost=$(echo $ring2 | cut -d ' ' -f 1)
                 PlayerCost=$((weapon_cost + armor_cost + ring1_cost + ring2_cost))
-                echo $PlayerCost
                 if  (DoesWin $PlayerDamage $PlayerArmor); then
                     if [[ $PlayerCost -lt $min_gold ]]; then
                         min_gold=$PlayerCost
@@ -101,4 +100,5 @@ for weapon in "${Weapons[@]}"; do
     done 
 done
 
+# 91 is the answer
 echo $min_gold
