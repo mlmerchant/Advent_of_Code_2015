@@ -105,15 +105,15 @@ EOF
 function get_on_neighbors() {
     local x=$(echo $1 | cut -d '.' -f 1)
     local y=$(echo $1 | cut -d '.' -f 2)
-    local N="$((y - 1))$x"
-    local S="$((y + 1))$x"
-    local E="$y$((x+1))"
-    local W="$y$((x-1))"
-    local NW="$((y - 1))$((x - 1))"
-    local NE="$((y - 1))$((x + 1))"
-    local SW="$((y + 1))$((x - 1))"
-    local SE="$((y + 1))$((x + 1))"
-    
+    local N="$((y - 1)).$x"
+    local S="$((y + 1)).$x"
+    local E="$y.$((x+1))"
+    local W="$y.$((x-1))"
+    local NW="$((y - 1)).$((x - 1))"
+    local NE="$((y - 1)).$((x + 1))"
+    local SW="$((y + 1)).$((x - 1))"
+    local SE="$((y + 1)).$((x + 1))"
+
     N="${prior_grid[$N]}"
     S="${prior_grid[$S]}"
     E="${prior_grid[$E]}"
@@ -122,10 +122,10 @@ function get_on_neighbors() {
     NE="${prior_grid[$NE]}"
     SW="${prior_grid[$SW]}"
     SE="${prior_grid[$SE]}"
-    
+
     local total=$( echo "$N$S$E$W$NW$NE$SW$SE" |
         sed 's/\.//g' | wc -c)
-        
+
     ((total--))
     echo $total
 }
