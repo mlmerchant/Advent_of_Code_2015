@@ -114,14 +114,14 @@ function get_on_neighbors() {
     local SW="$((y + 1))$((x - 1))"
     local SE="$((y + 1))$((x + 1))"
     
-    N="${grid[$N]}"
-    S="${grid[$S]}"
-    E="${grid[$E]}"
-    W="${grid[$W]}"
-    NW="${grid[$NW]}"
-    NE="${grid[$NE]}"
-    SW="${grid[$SW]}"
-    SE="${grid[$SE]}"
+    N="${prior_grid[$N]}"
+    S="${prior_grid[$S]}"
+    E="${prior_grid[$E]}"
+    W="${prior_grid[$W]}"
+    NW="${prior_grid[$NW]}"
+    NE="${prior_grid[$NE]}"
+    SW="${prior_grid[$SW]}"
+    SE="${prior_grid[$SE]}"
     
     local total=$( echo "$N$S$E$W$NW$NE$SW$SE" |
         sed 's/\.//g' | wc -c)
@@ -140,7 +140,7 @@ function process_light() {
     else
         # A light which is on stays on when 2 or 3 neighbors are on, and turns off otherwise.
         local num_of_neighbors=$(get_on_neighbors "$1")
-        if [[ $num_of_neighbors -eq 3 ]] || [[ $num_of_neighbors -eq 3 ]]; then
+        if [[ $num_of_neighbors -eq 2 ]] || [[ $num_of_neighbors -eq 3 ]]; then
             grid["$1"]="#"
         else
             grid["$1"]="."
@@ -165,9 +165,10 @@ while read -r line; do
 done < challenge.txt
 
 # Main Loop
-for z in {1..2}; do
+for z in {1..2}; do  #Should be set to 1..100 during the actual challenge.
     for y in {0..99}; do
         for x in {0..99}; do
+            echo "z:$z,x:$x,y:$y"
             process_light "$x.$y"
         done 
     done
@@ -177,6 +178,6 @@ for z in {1..2}; do
     done 
 done
 
-total=$(echo "${grid[*]}" | sed 's/\.//g' | wc -c)
-((total--)) # remove new line character
+total=$(echo "${grid[*]}" | grep -o '#' | wc -l)
 echo $total
+echo "${grid[*]}"  > final_grid.txt
