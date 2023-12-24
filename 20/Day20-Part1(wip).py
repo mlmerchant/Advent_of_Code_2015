@@ -1,16 +1,11 @@
-results = {}
-
-for z in range(1, 10001):
-    results[z] = 0
-
+top = 100000000
+results = [0] * top
 challenge = 34000000
 
-for x in range(1, 10001):
-    for y in range(x, 10001):
-        if y % x == 0:
-            results[y] += 10
-
-for z in range(1, 10001):
-    if results[z] == challenge:
-        print(z)
-        break
+for x in range(1, top):
+    for y in range(x, top, x):
+        results[y] += 10
+        if results[y] >= challenge:
+            print(y)
+            exit()  # Exit early if answer.
+print("No Answer Found") # Otherwise
