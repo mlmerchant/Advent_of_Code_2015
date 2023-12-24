@@ -1,12 +1,10 @@
-declare -A  Player
-declare -A Enemy
-
-Enemy['HP']=100
-Enemy['Damage']=8
-Enemy['Armor']=2
-Player['HP']=100
-Player['Damage']=0
-Player['Armor']=0
+EnemyHP=100
+EnemyDamage=8
+EnemyArmor=2
+PlayerHP=100
+PlayerDamage=0
+PlayerArmor=0
+PlayerCost=0
 
 #Weapons = Cost Damage Armor
 declare -a Weapons
@@ -17,12 +15,12 @@ Weapons[3]='40 7 0'
 Weapons[1]='74 8 0'
 
 #Armor = Cost  Damage  Armor
-declare -a Armor
-Armor[0]='13 0 1'
-Armor[1]='31 0 2'
-Armor[2]='53 0 3'
-Armor[3]='75 0 4'
-Armor[4]='102 0 5'
+declare -a Armors
+Armors[0]='13 0 1'
+Armors[1]='31 0 2'
+Armors[2]='53 0 3'
+Armors[3]='75 0 4'
+Armors[4]='102 0 5'
 
 # Rings = Cost  Damage  Armor
 declare -a Ring1
@@ -44,8 +42,28 @@ Ring2[5]='80 0 3 5'
 Ring2[6]='0 0 0 6'
 Ring2[7]='0 0 0 7'
 
-for weapon in "${weapons[@]}"; do
-    #for
-        #for
-           #for etc 
+min_gold=10000000
+
+for weapon in "${Weapons[@]}"; do
+    for armor in "${Armors[@]}"; do
+        for ring1 in "${Ring1[@]}"; do
+            for ring2 in "${Ring2[@]}"; do
+                if [[ $(echo $ring1 | cut -d ' ' -f 4) -eq $(echo $ring2 | cut -d ' ' -f 4) ]]; then
+                    continue # Can't wear 2 of the same rings.
+                fi
+                armor_armor_bonus=$(echo $armor | cut -d ' ' -f 3)
+                ring1_armor_bonus=$(echo $ring1 | cut -d ' ' -f 3)
+                ring2_armor_bonus=$(echo $ring2 | cut -d ' ' -f 3)
+                PlayerArmor=$((armor_armor_bonus + ring1_armor_bonus + ring2_armor_bonus))
+                weapon_weapon_bonus=$(echo $weapon | cut -d ' ' -f 2)
+                ring1_weapon_bonus=$(echo $ring1 | cut -d ' ' -f 2)
+                ring2_weapon_bonus=$(echo $ring2 | cut -d ' ' -f 2)
+                PlayerDamage=$((weapon_weapon_bonus + ring1_weapon_bonus + ring2_weapon_bonus))
+                weapon_cost=$(echo $weapon | cut -d ' ' -f 1)
+                armor_cost=$(echo $armor | cut -d ' ' -f 1)
+                ring1_cost=$(echo $ring1 | cut -d ' ' -f 1)
+                ring2_cost=$(echo $ring2 | cut -d ' ' -f 1)
+            done
+        done
+    done 
 done
