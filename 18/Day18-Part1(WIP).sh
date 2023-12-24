@@ -165,7 +165,7 @@ while read -r line; do
 done < challenge.txt
 
 # Main Loop
-for z in {1..2}; do  #Should be set to 1..100 during the actual challenge.
+for z in {1..100}; do  #Should be set to 1..100 during the actual challenge.
     for y in {0..99}; do
         for x in {0..99}; do
             echo "z:$z,x:$x,y:$y"
