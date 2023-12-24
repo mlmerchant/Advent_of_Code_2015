@@ -63,6 +63,8 @@ for weapon in "${Weapons[@]}"; do
                 armor_cost=$(echo $armor | cut -d ' ' -f 1)
                 ring1_cost=$(echo $ring1 | cut -d ' ' -f 1)
                 ring2_cost=$(echo $ring2 | cut -d ' ' -f 1)
+                PlayerCost=$((weapon_cost + armor_cost + ring1_cost + ring2_cost))
+                echo $PlayerCost
             done
         done
     done 
