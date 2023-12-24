@@ -38,7 +38,7 @@ Weapons[0]='8 4 0'
 Weapons[1]='10 5 0'
 Weapons[2]='25 6 0'
 Weapons[3]='40 7 0'
-Weapons[1]='74 8 0'
+Weapons[4]='74 8 0'
 
 #Armor = Cost  Damage  Armor
 declare -a Armors
