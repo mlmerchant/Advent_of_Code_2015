@@ -1,7 +1,33 @@
-EnemyHP=100
-EnemyDamage=8
-EnemyArmor=2
-PlayerHP=100
+function DoesWin() {
+    # usage: DoesWin damage_int armor_int
+    local EnemyHP=100
+    local EnemyDamage=8
+    local EnemyArmor=2
+    local PlayerHP=100
+    local PlayerDamage=$1
+    local PlayerArmor=$2
+    
+    EnemyDamage=$((EnemyDamage - PlayerArmor))
+    if [[ $EnemyDamage -le 0 ]]; then
+        EnemyDamage=1
+    fi
+    PlayerDamage=$((PlayerDamage - EnemyArmor))
+    if [[ $PlayerDamage -le 0 ]]; then
+        PlayerDamage=1
+    fi
+    #Fight Loop
+    while true; do
+        EnemyHP=$((EnemyHP - PlayerDamage))
+        if [[ $EnemyHP -le 0 ]]; then
+            return true
+        fi 
+        PlayerHP=$((PlayerHP - EnemyDamage))
+        if [[ $PlayerHP -le 0 ]]; then
+            return false
+        fi 
+    done 
+}
+
 PlayerDamage=0
 PlayerArmor=0
 PlayerCost=0
@@ -65,7 +91,14 @@ for weapon in "${Weapons[@]}"; do
                 ring2_cost=$(echo $ring2 | cut -d ' ' -f 1)
                 PlayerCost=$((weapon_cost + armor_cost + ring1_cost + ring2_cost))
                 echo $PlayerCost
+                if  (DoesWin $PlayerDamage $PlayerArmor); then
+                    if [[ $PlayerCost -lt $min_gold ]]; then
+                        min_gold=$PlayerCost
+                    fi 
+                fi
             done
         done
     done 
 done
+
+echo $min_gold
