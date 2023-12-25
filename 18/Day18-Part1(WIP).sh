@@ -103,77 +103,77 @@ cat << EOF > challenge.txt
 EOF
 
 function get_on_neighbors() {
-    local coords=($1)
-    local x=${coords[0]}
-    local y=${coords[1]}
-    local count=0
+    local x=$(echo $1 | cut -d '.' -f 1)
+    local y=$(echo $1 | cut -d '.' -f 2)
+    local N="$((y - 1)).$x"
+    local S="$((y + 1)).$x"
+    local E="$y.$((x+1))"
+    local W="$y.$((x-1))"
+    local NW="$((y - 1)).$((x - 1))"
+    local NE="$((y - 1)).$((x + 1))"
+    local SW="$((y + 1)).$((x - 1))"
+    local SE="$((y + 1)).$((x + 1))"
 
-    for dy in -1 0 1; do
-        for dx in -1 0 1; do
-            if [ $dy -eq 0 ] && [ $dx -eq 0 ]; then
-                continue
-            fi
-            local neighbor="${prior_grid[$((y + dy)),$((x + dx))]}"
-            if [ "$neighbor" == "#" ]; then
-                ((count++))
-            fi
-        done
-    done
+    N="${prior_grid[$N]}"
+    S="${prior_grid[$S]}"
+    E="${prior_grid[$E]}"
+    W="${prior_grid[$W]}"
+    NW="${prior_grid[$NW]}"
+    NE="${prior_grid[$NE]}"
+    SW="${prior_grid[$SW]}"
+    SE="${prior_grid[$SE]}"
 
-    echo $count
-}
+    echo "$N$S$E$W$NW$NE$SW$SE" | grep -o '#' | wc -l
+}    
 
 function process_light() {
-    local coords=($1)
-    local x=${coords[0]}
-    local y=${coords[1]}
-    local num_of_neighbors=$(get_on_neighbors "$x $y")
-
-    if [[ ${prior_grid[$y,$x]} == "." ]]; then
+    if [[ ${prior_grid["$1"]} == "." ]]; then
+        # A light which is off turns on if exactly 3 neighbors are on, and stays off otherwise.
+        local num_of_neighbors=$(get_on_neighbors "$1")
         if [[ $num_of_neighbors -eq 3 ]]; then
-            grid[$y,$x]="#"
-        else
-            grid[$y,$x]="."
+            grid["$1"]="#"
         fi
     else
+        # A light which is on stays on when 2 or 3 neighbors are on, and turns off otherwise.
+        local num_of_neighbors=$(get_on_neighbors "$1")
         if [[ $num_of_neighbors -eq 2 ]] || [[ $num_of_neighbors -eq 3 ]]; then
-            grid[$y,$x]="#"
+            grid["$1"]="#"
         else
-            grid[$y,$x]="."
+            grid["$1"]="."
         fi
     fi
 }
 
+count=0
+
+
 declare -A grid
 declare -A prior_grid
 
-# Read and initialize the grid
+# Prepare the grids
 y=0
 while read -r line; do
-    x=0
-    for ((i=0; i<${#line}; i++)); do
-        grid[$y,$x]=${line:$i:1}
-        prior_grid[$y,$x]=${line:$i:1}
-        ((x++))
-    done
+     for x in {0..99}; do
+         grid["$x.$y"]=${line:$x:1}
+         prior_grid["$x.$y"]=${line:$x:1}
+     done
     ((y++))
 done < challenge.txt
 
-# Main loop
-for z in {1..100}; do
-    echo "Iteration: $z"
-
-    # Process each light
-    for key in "${!grid[@]}"; do
-        process_light $key
+# Main Loop
+for z in {1..100}; do  #Should be set to 1..100 during the actual challenge.
+    for y in {0..99}; do
+        for x in {0..99}; do
+            echo "z:$z,x:$x,y:$y"
+            process_light "$x.$y"
+        done 
     done
-
-    # Update prior grid
+    #make new grid, old grid
     for key in "${!grid[@]}"; do
         prior_grid[$key]="${grid[$key]}"
-    done
+    done 
 done
 
-# Count the number of lights that are on
-total=$(echo "${grid[@]}" | grep -o '#' | wc -l)
-echo "Total lights on: $total"
+total=$(echo "${grid[*]}" | grep -o '#' | wc -l)
+echo $total
+echo "${grid[*]}"  > final_grid.txt
