@@ -175,5 +175,6 @@ for z in {1..100}; do  #Should be set to 1..100 during the actual challenge.
 done
 
 total=$(echo "${grid[*]}" | grep -o '#' | wc -l)
+
+# 168 is too low.
 echo $total
-echo "${grid[*]}"  > final_grid.txt
